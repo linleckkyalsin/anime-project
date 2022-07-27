@@ -58,6 +58,32 @@ public class Main {
 
             test.forEach(anime ->System.out.printf("Title: %s, Genre: %s, Rating: %s, Release_Date: %s\n", anime.getTitle(), anime.getGenre(), anime.getRating(), anime.getReleasedDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))) );
         }
+        Scanner scanner1=new Scanner(System.in);
+        System.out.println("【見たいアニメの種類は何でしょうか】");
+        String genreInput=scanner1.nextLine();
+
+        Map<Genre, List<Anime>> collect = animes.stream().filter(anime -> anime.getGenre().toString().toLowerCase().contains(genreInput.toLowerCase())).collect(groupingBy(Anime::getGenre));
+        if (collect.isEmpty()){
+            System.out.println("【\uD83E\uDD7A検索した"+genreInput+"の作品が見つかりませんでした】");
+        }
+        else {
+
+            collect.forEach((genre, animes3) -> {
+                System.out.println("【検索したアニメの結果"+"("+animes3.stream().count()+")"+"】");
+                System.out.println(genre+"("+animes3.stream().count()+")");
+                animes3.stream().forEach(anime ->System.out.printf("Title: %s, Genre: %s, Rating: %s, Release_Date: %s\n", anime.getTitle(), anime.getGenre(), anime.getRating(), anime.getReleasedDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))));
+
+            });
+        }
+
+
+        boolean isRatingAbove3 = animes.stream().allMatch(anime -> anime.getRating() > 3);
+        if (!isRatingAbove3){
+            System.out.println("【すべてのアニメのレイティングが3超過】");
+        }
+        else {
+            System.out.printf("【3未満のレイティングのアニメもあります】");
+        }
 
     }
 }
