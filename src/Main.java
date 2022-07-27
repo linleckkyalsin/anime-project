@@ -1,5 +1,9 @@
 import java.time.LocalDate;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 public class Main {
     public static void main(String[] args){
@@ -13,5 +17,47 @@ public class Main {
                 new Anime("Haikyuu",4,Genre.SPORT,LocalDate.of(2014,4,9)),
                 new Anime("Haikyuu Season 2",4.5F,Genre.SPORT,LocalDate.of(2015,12,3))
         );
+        System.out.println("【すべてのアニメを表示する】");
+        animes.forEach(anime -> System.out.printf("Title: %s, Genre: %s, Rating: %s, Release_Date: %s\n", anime.getTitle(), anime.getGenre(), anime.getRating(), anime.getReleasedDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))));
+        List<Anime> comedies= animes.stream().filter(anime -> anime.getGenre().equals(Genre.COMEDY)).collect(toList());
+        System.out.println("【コメデイアニメを表示する"+"("+comedies.stream().count()+")"+"】");
+        comedies.stream().forEach(comedy-> System.out.printf("Title: %s, Genre: %s, Rating: %s, Release_Date: %s\n",comedy.getTitle(),comedy.getGenre(),comedy.getRating(),comedy.getReleasedDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))));
+        System.out.println("【ジャンルに沿ってアニメを表示する】");
+        Map<Genre,List<Anime>> groupByGenre = animes.stream().collect(groupingBy(Anime::getGenre,toList()));
+
+        groupByGenre.forEach((genre, animes1) ->
+                {
+                    System.out.println(genre+"("+animes1.stream().count()+")");
+                    animes1.forEach(anime -> System.out.printf("Title: %s, Genre: %s, Rating: %s, Release_Date: %s\n", anime.getTitle(), anime.getGenre(), anime.getRating(), anime.getReleasedDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))));
+                }
+        );
+
+        Map<Genre, List<Anime>> sortedGroupByGenre = animes.stream().collect(groupingBy(Anime::getGenre, LinkedHashMap::new, toList()));
+        System.out.println("【ジャンルに沿ってアニメをジャンルの昇順に並び替えて表示する");
+        sortedGroupByGenre.forEach((genre, animes2) ->
+                {
+                    System.out.println(genre+"("+animes2.stream().count()+")");
+                    animes2.forEach(anime -> System.out.printf("Title: %s, Genre: %s, Rating: %s, Release_Date: %s\n", anime.getTitle(), anime.getGenre(), anime.getRating(), anime.getReleasedDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))));
+                }
+        );
+        System.out.println("【レイティングが一番高いアニメ一覧を表示する】");
+
+        Anime highestRate= animes.stream().max(Comparator.comparing(Anime::getRating)).orElseThrow(IllegalStateException::new);
+        animes.stream().filter(anime -> anime.getRating()==highestRate.getRating()).collect(toList()).forEach(anime -> System.out.printf("Title: %s, Genre: %s, Rating: %s, Release_Date: %s\n", anime.getTitle(), anime.getGenre(), anime.getRating(), anime.getReleasedDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))));
+
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("【見たいアニメは何でしょうか】");
+        String name=scanner.nextLine();
+
+        List<Anime> test= animes.stream().filter(anime -> anime.getTitle().toLowerCase().contains(name.toLowerCase())).collect(toList());
+        System.out.println("【検索したアニメの結果"+"("+test.stream().count()+")】");
+        if (test.isEmpty()){
+            System.out.println("【\uD83E\uDD7A検索した"+name+"が見つかりませんでした】");
+        }
+        else {
+
+            test.forEach(anime ->System.out.printf("Title: %s, Genre: %s, Rating: %s, Release_Date: %s\n", anime.getTitle(), anime.getGenre(), anime.getRating(), anime.getReleasedDate().format(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))) );
+        }
+
     }
 }
