@@ -9,7 +9,11 @@ public class Anime {
 
     public Anime(String title, float rating, Genre genre, LocalDate releasedDate) {
         this.title = title;
-        this.rating = rating;
+        if (rating >= 0 && rating <= 5) {
+            this.rating = rating;
+        } else {
+            throw new IllegalStateException("【レイティングが5以下になければなりません】");
+        }
         this.genre = genre;
         this.releasedDate = releasedDate;
     }
@@ -19,12 +23,7 @@ public class Anime {
     }
 
     public float getRating() {
-        if (rating >= 0 && rating <= 5) {
-            return rating;
-        } else {
-            throw new IllegalStateException("【レイティングが5以下になければなりません】");
-        }
-
+        return rating;
 
     }
 
