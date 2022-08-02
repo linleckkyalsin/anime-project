@@ -11,7 +11,7 @@ public class Anime {
         this.title = title;
         this.rating = rating;
         this.genre = genre;
-        this.releasedDate=releasedDate;
+        this.releasedDate = releasedDate;
     }
 
     public String getTitle() {
@@ -19,10 +19,9 @@ public class Anime {
     }
 
     public float getRating() {
-        if (rating<=5){
+        if (rating >= 0 && rating <= 5) {
             return rating;
-        }
-        else {
+        } else {
             throw new IllegalStateException("【レイティングが5以下になければなりません】");
         }
 
@@ -37,15 +36,6 @@ public class Anime {
         return releasedDate;
     }
 
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
-                ", rating=" + rating +
-                ", genre=" + genre +
-                ", releasedDate=" + releasedDate +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {
