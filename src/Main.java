@@ -8,7 +8,7 @@ import static java.util.stream.Collectors.toList;
 public class Main {
     public static void main(String[] args) {
         List<Anime> animes = List.of(
-                new Anime("ドクターストーン", 5.4F, Genre.ACTION, LocalDate.of(2012, 2, 6)),
+                new Anime("ドクターストーン", 5, Genre.ACTION, LocalDate.of(2012, 2, 6)),
                 new Anime("進撃の巨人", 4.5F, Genre.ACTION, LocalDate.of(2011, 1, 5)),
                 new Anime("ホリミヤ", 5, Genre.ROMANCE, LocalDate.of(2021, 2, 26)),
                 new Anime("その 着せ替え人形 ビスク・ドール は恋をする", 5, Genre.ROMANCE, LocalDate.of(2021, 10, 9)),
